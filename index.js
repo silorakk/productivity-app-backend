@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const verifyToken = require("./middleware/verifyToken");
-const PORT = 5000;
 
 dotenv.config();
 
@@ -39,6 +38,6 @@ app.use('/', verifyToken, (req, res) => {
 
 
 
-app.listen(PORT, () => {
-  console.log(`App running on port ${process.env.PORT || PORT} `)
+app.listen(process.env.PORT, () => {
+  console.log(`App running on port ${process.env.PORT} `)
 })
