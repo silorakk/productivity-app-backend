@@ -72,7 +72,9 @@ router.post('/register', validationRules, async (req, res) => {
 })
 
 router.get('/all', (req, res) => {
-  return res.json(users);
+  User.find({}).then((users) => {
+    return res.json(users);
+  })
 })
 
 router.post('/login', async (req, res) => {
