@@ -11,21 +11,14 @@ dotenv.config();
 const validationRules = [
   check("email", "Email is not a valid email address.").isEmail(),
   check("name", "Please enter a name.").notEmpty(),
+  check("nickname", "Pleter enter a nickname.").notEmpty(),
   check("password", "Password is too short.").isLength({
     min: 6
   }),
-  check("confirmPassword")
-    .notEmpty().withMessage("Confirm Password should not be empty.")
-    .custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error('Password confirmation does not match with password.')
-      }
-      return true;
-    })
 ]
 
 router.post('/register', validationRules, async (req, res) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, nickname } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -47,7 +40,7 @@ router.post('/register', validationRules, async (req, res) => {
 
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ name: name, email: email, password: hashedPassword });
+  const newUser = new User({ name: name, email: email, password: hashedPassword, nickname: nickname });
 
   try {
     const savedUser = await newUser.save();

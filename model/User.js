@@ -5,6 +5,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: 6
   },
+  nickname: {
+    type: String,
+    required: true,
+    min: 6
+  },
   email: {
     type: String,
     required: true,
