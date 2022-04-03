@@ -5,6 +5,7 @@ const User = require('../model/User');
 
 dotenv.config();
 
+// Function not used
 module.exports = async (req, res, next) => {
   const token = req.cookies['x-auth-token'];
 
