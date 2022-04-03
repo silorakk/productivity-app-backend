@@ -106,5 +106,20 @@ router.post('/login', async (req, res) => {
   return res.header('x-auth-token', token).send(token);
 })
 
+router.get('/verify', async (req, res, next) => {
+  const token = req.cookies['x-auth-token'];
+
+  if (!token) return res.status(401).send("Access Denied!");
+
+  try {
+    const validatedUser = await JWT.verify(token, process.env.JWT_SECRET);
+    const user = await User.findOne({ email: validatedUser.email })
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+
+})
+
 
 module.exports = router;

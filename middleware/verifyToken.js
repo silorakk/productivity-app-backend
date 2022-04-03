@@ -1,6 +1,7 @@
 const res = require('express/lib/response');
 const JWT = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const User = require('../model/User');
 
 dotenv.config();
 
@@ -11,10 +12,11 @@ module.exports = async (req, res, next) => {
 
   try {
     const validatedUser = await JWT.verify(token, process.env.JWT_SECRET);
-    req.user = validatedUser;
+    const user = await User.findOne({ email: validatedUser.email })
+    req.user = user
     next()
   } catch (error) {
-    return res.status(400).send("Invalid Token");
+    next()
 
   }
 
