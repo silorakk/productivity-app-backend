@@ -50,7 +50,7 @@ router.post('/register', validationRules, async (req, res) => {
       expiresIn: 360000
     });
     return res
-      .cookie("x-auth-token", token, { maxAge: 900000, httpOnly: true, sameSite: 'None', secure: true })
+      .cookie("x-auth-token", token, { maxAge: 900000, httpOnly: true })
       .status(200)
       .json({ message: "Logged in successfully." });
   } catch (error) {
