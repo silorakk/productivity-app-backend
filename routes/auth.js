@@ -79,7 +79,7 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({
       "errors": [
         {
-          "msg": "The user doesn't exist.",
+          "msg": "The user with this email doesn't exist.",
         },
       ]
     });
