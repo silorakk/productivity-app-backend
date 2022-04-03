@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const JWT = require('jsonwebtoken');
-const { users } = require('../database');
 const { check, validationResult } = require('express-validator');
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
@@ -54,7 +53,7 @@ router.post('/register', validationRules, async (req, res) => {
     return res
       .cookie("x-auth-token", token, cookieOptions)
       .status(200)
-      .json({ message: "Logged in successfully." });
+      .json({ message: "Registered successfully." });
   } catch (error) {
     return res.status(400).json({
       "errors": [
@@ -75,7 +74,7 @@ router.get('/all', (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const user = users.find((user) => { return user.email == email })
+  const user = await User.findOne({ email: email });
 
   if (!user) {
     return res.status(400).json({
@@ -104,8 +103,8 @@ router.post('/login', async (req, res) => {
   }, process.env.JWT_SECRET, {
     expiresIn: 360000
   });
-
-  return res.header('x-auth-token', token).send(token);
+  const cookieOptions = process.env.ENVIRONMENT === "PRODUCTION" ? { maxAge: 900000, httpOnly: true, sameSite: "None", secure: true } : { maxAge: 900000, httpOnly: true }
+  return res.cookie('x-auth-token', token, cookieOptions).status(200).json({ message: "Logged in successfully." })
 })
 
 router.get('/verify', async (req, res, next) => {
