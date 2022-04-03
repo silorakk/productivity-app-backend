@@ -49,8 +49,10 @@ router.post('/register', validationRules, async (req, res) => {
     }, process.env.JWT_SECRET, {
       expiresIn: 360000
     });
+
+    const cookieOptions = process.env.ENVIRONMENT === "PRODUCTION" ? { maxAge: 900000, httpOnly: true, sameSite: "None", secure: true } : { maxAge: 900000, httpOnly: true }
     return res
-      .cookie("x-auth-token", token, { maxAge: 900000, httpOnly: true })
+      .cookie("x-auth-token", token, cookieOptions)
       .status(200)
       .json({ message: "Logged in successfully." });
   } catch (error) {
