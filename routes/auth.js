@@ -107,7 +107,7 @@ router.post('/login', async (req, res) => {
   return res.cookie('x-auth-token', token, cookieOptions).status(200).json({ message: "Logged in successfully." })
 })
 
-router.get('/verify', async (req, res, next) => {
+router.get('/verify', async (req, res) => {
   const token = req.cookies['x-auth-token'];
 
   if (!token) return res.status(401).send("Access Denied!");
@@ -119,6 +119,12 @@ router.get('/verify', async (req, res, next) => {
   } catch (error) {
     return res.status(400).json(error);
   }
+
+})
+
+router.get('/logout', async (req, res) => {
+  res.clearCookie('x-auth-token');
+  res.status(200).end();
 
 })
 
