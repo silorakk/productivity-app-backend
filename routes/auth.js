@@ -123,7 +123,7 @@ router.get('/verify', async (req, res) => {
 })
 
 router.get('/logout', async (req, res) => {
-  res.cookie('x-auth-token', "", { maxAge: 0 })
+  res.cookie('x-auth-token', "", { maxAge: 0, domain: process.env.ENVIRONMENT === "PRODUCTION" ? "https://productivity-app-nu.vercel.app" : "http://localhost:3000", path: "/" })
 
   return res.status(200).end();
 
