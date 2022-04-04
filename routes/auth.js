@@ -123,11 +123,9 @@ router.get('/verify', async (req, res) => {
 })
 
 router.get('/logout', async (req, res) => {
-  cookies.set('testtoken', { expires: Date.now() });
-  res.cookie('x-auth-token', "", { expires: Date.now() });
+  res.cookie('x-auth-token', "", { maxAge: 0 })
 
-
-  res.status(200).end();
+  return res.status(200).end();
 
 })
 
